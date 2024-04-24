@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
  * out the number of attempts.
  */
 app.get('/stats/kaizo', (req, res) => {
-  const file = '/mnt/d/Emulators/BizHawk/Lua/IronMon/FRLG Kaizo Attempts.txt'
+  const file = '/mnt/e/BizHawk/Lua/IronMon/FRLG Kaizo Attempts.txt'
 
   try {
     fs.readFile(file, 'utf-8', (err, data) => {
@@ -28,6 +28,25 @@ app.get('/stats/kaizo', (req, res) => {
   }
 })
 
+/**
+ * This route reads from our local Kaizo CSV file and spits 
+ * out... the CSV.
+ */
+app.get('/stats/kaizo/csv', (req, res) => {
+  const file = '/mnt/e/BizHawk/Lua/IronMon/extensions/SimplyTracked/simply-tracked.csv'
+
+  try {
+    fs.readFile(file, 'utf-8', (err, data) => {
+      if (err) throw err
+      return res.status(200).type('text/csv').send(file)
+    })
+  } catch (err) {
+    console.error(err)
+    return res.status(500).end()
+  }
+})
+
 app.listen(port, () => {
   console.log(`Connect is listening on port ${port}.`)
 })
+ 
